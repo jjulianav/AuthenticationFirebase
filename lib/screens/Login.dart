@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gtadvogacia/screens/Home.dart';
 
@@ -45,18 +44,46 @@ class _LoginState extends State<Login> {
         showLoading = false;
       });
       _scaffoldKey.currentState!
-          .showSnackBar(SnackBar(content: Text(e.message)));
+          .showSnackBar(SnackBar(content: Text(e.message.toString())));
     }
   }
 
   getMobileFormWidget(context) {
     return Column(
       children: [
-        Spacer(),
+        Container(
+          child: Image.asset('\images\GTAdvogacia.png'),
+        ),
+        SizedBox(
+          height: 20,
+        ),
         TextField(
-          controller: phoneController,
           decoration: InputDecoration(
-            hintText: "Phone Number",
+            labelText: "CPF",
+            hintText: "Digite o CPF",
+            hintStyle: TextStyle(color: Colors.blue),
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        TextField(
+          decoration: InputDecoration(
+            labelText: "Sobrenome",
+            hintText: "Digite o sobrenome",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        TextField(
+          //controllser: phoneController,
+          decoration: InputDecoration(
+            labelText: "Telefone",
+            hintText: "Digite o telefone celular",
+            border: OutlineInputBorder(),
           ),
         ),
         ElevatedButton(
@@ -77,8 +104,8 @@ class _LoginState extends State<Login> {
                 setState(() {
                   showLoading = false;
                 });
-                _scaffoldKey.currentState!.showSnackBar(
-                    SnackBar(content: Text(verificationFailed.message)));
+                _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                    content: Text(verificationFailed.message.toString())));
               },
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
@@ -91,9 +118,8 @@ class _LoginState extends State<Login> {
               codeAutoRetrievalTimeout: (verificationId) async {},
             );
           },
-          child: Text("ENVIAR"),
+          child: Text("Validar telefone"),
         ),
-        Spacer(),
       ],
     );
   }
@@ -108,7 +134,7 @@ class _LoginState extends State<Login> {
             hintText: "Enter OTP",
           ),
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: () async {
             AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
                 verificationId: verificationId, smsCode: otpController.text);
